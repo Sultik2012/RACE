@@ -93,10 +93,44 @@
 @media (max-width: 700px) { .career-slots { grid-template-columns: 1fr; } }
 
 .device-chooser { min-height: 100vh; padding: 12vh 8vw; background: radial-gradient(circle at 75% 20%, #51241e, #121211 62%); color: #fff; }.device-chooser h1 { max-width: 690px; margin: 14px 0; font: 900 clamp(48px, 8vw, 92px)/.8 'Barlow Condensed'; }.device-chooser > p:not(.eyebrow) { color: #b7b2a8; }.device-chooser > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 900px; margin-top: 38px; }.device-chooser button { display: grid; gap: 8px; min-height: 190px; padding: 20px; border: 1px solid #ffffff2e; background: #22211f; color: #fff; text-align: left; }.device-chooser button:hover { border-color: #f34432; background: #3b2724; }.device-chooser i { color: #f34432; font: 40px/1 Arial; font-style: normal; }.device-chooser b { font: 900 26px 'Barlow Condensed'; }.device-chooser small { color: #aaa69e; font-size: 11px; line-height: 1.4; }
-html[data-device='tablet'] .manager-wrap, html[data-device='tablet'] .hq, html[data-device='tablet'] .weekend { max-width: 900px; padding-left: 22px; padding-right: 22px; } html[data-device='tablet'] .career-extras { grid-template-columns: 1fr; } html[data-device='phone'] .manager-wrap, html[data-device='phone'] .hq, html[data-device='phone'] .weekend { max-width: 520px; padding: 32px 14px 60px; } html[data-device='phone'] .hq-grid, html[data-device='phone'] .career-extras, html[data-device='phone'] .career-controls, html[data-device='phone'] .season-summary { grid-template-columns: 1fr; } html[data-device='phone'] .calendar-races { grid-template-columns: repeat(2, 1fr); } html[data-device='phone'] .timing-list { grid-template-columns: 1fr; } html[data-device='phone'] .timing-row:nth-child(odd) { border-right: 0; } html[data-device='phone'] .real-track-map-panel { padding: 10px; } html[data-device='phone'] .track-map-visual { height: 270px; }
+html[data-device='tablet'] .manager-wrap, html[data-device='tablet'] .hq, html[data-device='tablet'] .weekend { max-width: 900px; padding-left: 22px; padding-right: 22px; } html[data-device='tablet'] .career-extras { grid-template-columns: 1fr; } html[data-device='phone'] .manager-wrap, html[data-device='phone'] .hq, html[data-device='phone'] .weekend { max-width: 520px; padding: 32px 14px 60px; } html[data-device='phone'] .hq-grid, html[data-device='phone'] .career-extras, html[data-device='phone'] .career-controls, html[data-device='phone'] .season-summary { grid-template-columns: 1fr; } html[data-device='phone'] .calendar-races { grid-template-columns: repeat(2, 1fr); } html[data-device='phone'] .timing-list { grid-template-columns: 1fr; } html[data-device='phone'] .timing-row:nth-child(odd) { border-right: 0; } html[data-device='phone'] .real-track-map-panel { padding: 10px; }
 
 .home-copy .eyebrow::after { content: 'Ты не смотришь F1 — теперь ты ей управляешь.'; display: block; max-width: 360px; margin-top: 12px; color: #fff; font: 800 17px/1.2 'Barlow Condensed'; letter-spacing: .02em; text-transform: none; } html[data-device='phone'] .real-track-map-panel { max-width: 100%; overflow: hidden; } html[data-device='phone'] .track-map-visual { box-sizing: border-box; min-width: 0; overflow: hidden; padding: 6px; } html[data-device='phone'] .track-map-visual .circuit-svg { min-width: 0; max-width: 100%; } html[data-device='phone'] .circuit-label { font-size: 8px; stroke-width: 3px; }
 @media (max-width: 700px) { .device-chooser { padding: 10vh 20px; }.device-chooser > div { grid-template-columns: 1fr; margin-top: 25px; }.device-chooser button { min-height: 120px; } }
 
 .daily-streak { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 15px 0; padding: 17px 20px; border: 1px solid #f18a2f66; background: linear-gradient(100deg, #3f271d, #211e1b); }.daily-streak b, .daily-streak small { display: block; }.daily-streak b { margin: 5px 0; color: #ffc047; font: 900 31px 'Barlow Condensed'; }.daily-streak small { color: #c5b6a7; font-size: 11px; }.streak-days { display: flex; gap: 7px; }.streak-days span { display: grid; place-items: center; width: 31px; height: 37px; border-radius: 45% 45% 50% 50%; background: #34302c; color: #77716a; font-size: 16px; }.streak-days .active { background: #f36c2f; color: #fff; box-shadow: 0 4px 0 #a63c20; }
 @media (max-width: 700px) { .daily-streak { align-items: start; flex-direction: column; }.streak-days { width: 100%; justify-content: space-between; } }
+
+/* Final responsive race-map layout: one bounded card on phone, a large map on desktop. */
+html[data-device='phone'] .weekend { overflow-x: clip; }
+html[data-device='phone'] .real-track-map-panel {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+}
+html[data-device='phone'] .real-track-map-panel .track-map-visual {
+  width: 100%;
+  height: min(48vw, 180px) !important;
+  min-height: 0;
+  max-height: 180px;
+  margin: 8px 0;
+  padding: 4px;
+  overflow: hidden;
+}
+html[data-device='phone'] .real-track-map-panel .circuit-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+@media (min-width: 701px) {
+  .real-track-map-panel .track-map-visual {
+    height: clamp(500px, 56vw, 760px);
+    max-height: 760px;
+  }
+}

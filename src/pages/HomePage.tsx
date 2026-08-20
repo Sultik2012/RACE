@@ -2,12 +2,22 @@ import { Link } from 'wouter';
 import { LanguageSelector } from '../components/LanguageSelector';
 
 export function HomePage() {
-  return <main className="landing landing-new">
-    <nav className="topbar home-nav"><span className="brand">APEX <i>RACING</i></span><div><span className="season-tag">MANAGER CAREER · 2026</span><LanguageSelector /><Link className="home-auth" href="/auth">ВОЙТИ</Link></div></nav>
-    <section className="home-hero">
-      <div className="home-copy"><p className="eyebrow">THE F1 TEAM MANAGEMENT GAME</p><h1>ТВОЯ КОМАНДА.<br /><em>ТВОИ РЕШЕНИЯ.</em></h1><p>Построй путь от первого гаража до титула: подписывай пилотов, развивай болид и управляй каждой гонкой с пит-уолла.</p><div className="home-actions"><Link href="/game" className="action-button">НАЧАТЬ КАРЬЕРУ →</Link><Link href="/auth" className="outline-button">СОЗДАТЬ АККАУНТ</Link></div><div className="home-proof"><span><b>11</b> КОМАНД</span><span><b>24</b> ГРАН-ПРИ</span><span><b>20</b> ПИЛОТОВ</span></div></div>
-      <aside className="hero-race-card"><div className="hero-card-top"><span>LIVE · MELBOURNE</span><b>RACE CONTROL</b></div><div className="hero-pos"><small>CURRENT POSITION</small><strong>P<span>3</span></strong></div><div className="mini-timing"><div><b>P1</b><span>M. Verstappen</span><small>LEADER</small></div><div><b>P2</b><span>L. Norris</span><small>+1.284</small></div><div className="you"><b>P3</b><span>YOUR TEAM</span><small>+2.011</small></div><div><b>P4</b><span>C. Leclerc</span><small>+2.749</small></div></div><div className="hero-card-bottom"><span>TYRES <b>62%</b></span><span>FUEL <b>44%</b></span><button>CALL PIT</button></div></aside>
+  return <main className="landing-hub">
+    <nav className="hub-nav">
+      <Link className="hub-brand" href="/">APEX<span>26</span></Link>
+      <div><span className="hub-season">OFFICIAL TEAM MANAGER</span><LanguageSelector /><Link href="/auth">ВОЙТИ</Link></div>
+    </nav>
+    <section className="hub-stage">
+      <div className="hub-copy">
+        <p>SEASON 2026 · YOUR STORY STARTS NOW</p>
+        <h1>ПОСТРОЙ<br /><em>СВОЮ ЭРУ.</em></h1>
+        <span className="hub-line" />
+        <div className="hub-description"><b>ТЫ — РУКОВОДИТЕЛЬ КОМАНДЫ</b><span>Контракты. Болид. Стратегия. Каждое решение меняет историю чемпионата.</span></div>
+        <div className="hub-actions"><Link className="hub-start" href="/game">НАЧАТЬ КАРЬЕРУ <b>→</b></Link><Link className="hub-ghost" href="/auth">СОЗДАТЬ ПРОФИЛЬ</Link></div>
+      </div>
+      <div className="hub-car" aria-label="Apex Racing race car illustration"><div className="hub-wheel left" /><div className="hub-wheel right" /><div className="hub-body"><i /><b /></div><small>APEX RACING<br />AR-26</small></div>
+      <aside className="hub-weekend"><header><span><i /> NEXT EVENT</span><b>01 / 24</b></header><div className="hub-flag">🇦🇺</div><p>AUSTRALIAN GRAND PRIX</p><strong>MELBOURNE</strong><small>06—08 MAR · ALBERT PARK</small><footer><span>RACE WEEKEND</span><b>START →</b></footer></aside>
     </section>
-    <section className="home-features"><article><span>01</span><h2>СОБЕРИ КОМАНДУ</h2><p>Выбери существующую команду или создай свою с нуля.</p></article><article><span>02</span><h2>УПРАВЛЯЙ УИКЕНДОМ</h2><p>Практики, квалификация, стратегия шин и пит-стопы.</p></article><article><span>03</span><h2>ПОБЕЖДАЙ</h2><p>Зарабатывай призовые и вложи их в новый чемпионский болид.</p></article></section>
+    <footer className="hub-footer"><span>11 TEAMS</span><i /><span>22 DRIVERS</span><i /><span>24 GRAND PRIX</span><b>MAKE THE CALL.</b></footer>
   </main>;
 }

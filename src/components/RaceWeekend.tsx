@@ -116,7 +116,7 @@ export function RaceWeekend({
       ? simulatedTeammatePosition
       : Math.max(1, Math.min(22, base + ((round * 5) % 7) - 3));
   useEffect(() => {
-    if (!race || finished || retired || pitTime > 0 || startLights || safetyCar) return;
+    if (!race || finished || retired || pitTime > 0 || startLights) return;
     const timer = window.setInterval(() => {
       setLap((v) => Math.min(58, v + 1));
       setWear((v) =>
@@ -131,7 +131,7 @@ export function RaceWeekend({
         Math.max(0, Math.min(100, value + (ersActive ? -18 : 7))),
       );
       setErsActive(false);
-    }, speed * 1000);
+    }, speed * 1000 * (safetyCar ? 1.6 : 1));
     return () => window.clearInterval(timer);
   }, [
     race,
@@ -152,20 +152,20 @@ export function RaceWeekend({
     safetyCar,
   ]);
   useEffect(() => {
-    if (!race || finished || retired || pitTime > 0 || startLights || safetyCar) return;
+    if (!race || finished || retired || pitTime > 0 || startLights) return;
     const timer = window.setInterval(() => {
       setRaceDrivers((current) => {
         const result = advanceRace(current, {
           carPace: pace,
           driverRating,
           player: driver,
-          mode: raceMode,
+          mode: safetyCar ? "SAVE" : raceMode,
           playerWear: wear,
-          useErs: ersActive,
-          hasDrs: drsAvailable,
+          useErs: safetyCar ? false : ersActive,
+          hasDrs: safetyCar ? false : drsAvailable,
           weatherIsWet: wet,
           playerInPit: false,
-          step: 1 / (speed * 4),
+          step: (safetyCar ? 0.22 : 1) / (speed * 4),
         });
         setDrsAvailable(result.drsAvailable);
         if (result.message && Math.random() < 0.12) setRadioMessage(`Engineer: ${result.message}`);

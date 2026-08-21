@@ -60,7 +60,12 @@ export function advanceRace(drivers: RaceDriver[], input: SimulationInput): Simu
     };
   }).sort((left, right) => right.distance - left.distance);
 
-  const playerIndex = next.findIndex((driver) => driver.name === input.player);
+  let playerIndex = next.findIndex((driver) => driver.name === input.player);
+  if (input.upgradeCount === 0 && playerIndex >= 0 && playerIndex < 16) {
+    const [player] = next.splice(playerIndex, 1);
+    next.splice(16, 0, player);
+    playerIndex = 16;
+  }
   const ahead = next[playerIndex - 1];
   const player = next[playerIndex];
   const gap = ahead && player ? Math.max(0.08, (ahead.distance - player.distance) * 2.9) : 0;

@@ -68,7 +68,8 @@ export function RaceWeekend({
   const botChallenge = opponentChallenge(difficulty, round);
   const developmentPositionBonus = Math.floor(upgradeCount / 2);
   const zeroUpgradePenalty = upgradeCount === 0 ? 4 : 0;
-  const startingPosition = Math.max(1, Math.min(22, 24 - Math.round((pace + driverRating - botChallenge) / 9) - developmentPositionBonus + zeroUpgradePenalty + ((round * 3) % 5 - 2)));
+  const calculatedStartingPosition = Math.max(1, Math.min(22, 24 - Math.round((pace + driverRating - botChallenge) / 9) - developmentPositionBonus + zeroUpgradePenalty + ((round * 3) % 5 - 2)));
+  const startingPosition = upgradeCount === 0 ? Math.max(17, calculatedStartingPosition) : calculatedStartingPosition;
   const [done, setDone] = useState<Session[]>([]);
   const [setup, setSetup] = useState(0);
   const [grid, setGrid] = useState<number | null>(null);
@@ -113,7 +114,8 @@ export function RaceWeekend({
     modePace +
     (wet && (tyre === "INTERMEDIATE" || tyre === "WET") ? 8 : wet ? -8 : 0) -
     botChallenge;
-  const base = Math.max(1, Math.min(22, startingPosition - Math.round((strength - (pace + driverRating - botChallenge)) / 5)));
+  const calculatedBase = Math.max(1, Math.min(22, startingPosition - Math.round((strength - (pace + driverRating - botChallenge)) / 5)));
+  const base = upgradeCount === 0 ? Math.max(17, calculatedBase) : calculatedBase;
   const simulatedPosition =
     raceDrivers.findIndex((entry) => entry.name === driver) + 1;
   const simulatedTeammatePosition =
@@ -494,7 +496,7 @@ export function RaceWeekend({
   };
   const finishSession = () => {
     if (session === "Qualifying") {
-      setGrid(Math.max(1, base - setup));
+      setGrid(Math.max(upgradeCount === 0 ? 17 : 1, base - setup));
       setDone((v) => (v.includes("Qualifying") ? v : [...v, session]));
     } else {
       setSetup((v) => Math.min(2, v + 1));

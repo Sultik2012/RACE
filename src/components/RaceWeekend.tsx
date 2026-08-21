@@ -67,7 +67,8 @@ export function RaceWeekend({
   const [upgradeCount] = useState(() => Number(localStorage.getItem('apex-active-upgrade-count') ?? 0));
   const botChallenge = opponentChallenge(difficulty, round);
   const developmentPositionBonus = Math.floor(upgradeCount / 2);
-  const startingPosition = Math.max(1, Math.min(22, 24 - Math.round((pace + driverRating - botChallenge) / 9) - developmentPositionBonus + ((round * 3) % 5 - 2)));
+  const zeroUpgradePenalty = upgradeCount === 0 ? 4 : 0;
+  const startingPosition = Math.max(1, Math.min(22, 24 - Math.round((pace + driverRating - botChallenge) / 9) - developmentPositionBonus + zeroUpgradePenalty + ((round * 3) % 5 - 2)));
   const [done, setDone] = useState<Session[]>([]);
   const [setup, setSetup] = useState(0);
   const [grid, setGrid] = useState<number | null>(null);
@@ -166,6 +167,7 @@ export function RaceWeekend({
         const result = advanceRace(current, {
           carPace: pace,
           driverRating,
+          upgradeCount,
           opponentChallenge: botChallenge,
           player: driver,
           mode: safetyCar ? "SAVE" : raceMode,
@@ -182,7 +184,7 @@ export function RaceWeekend({
       });
     }, 250);
     return () => window.clearInterval(timer);
-  }, [race, finished, retired, pitTime, pace, driverRating, driver, raceMode, wear, ersActive, drsAvailable, wet, speed, startLights, safetyCar, botChallenge]);
+  }, [race, finished, retired, pitTime, pace, driverRating, driver, upgradeCount, raceMode, wear, ersActive, drsAvailable, wet, speed, startLights, safetyCar, botChallenge]);
   useEffect(() => {
     if (pitTime <= 0) return;
     const timer = window.setInterval(

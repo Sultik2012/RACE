@@ -15,7 +15,7 @@ export function HomePage() {
         <div className="hub-description"><b>ТЫ — РУКОВОДИТЕЛЬ КОМАНДЫ</b><span>Контракты. Болид. Стратегия. Каждое решение меняет историю чемпионата.</span></div>
         <div className="hub-actions"><Link className="hub-start" href="/game">НАЧАТЬ КАРЬЕРУ <b>→</b></Link><Link className="hub-ghost" href="/auth">СОЗДАТЬ ПРОФИЛЬ</Link></div>
       </div>
-      <div className="hub-car" aria-label="Apex Racing race car illustration"><div className="hub-wheel left" /><div className="hub-wheel right" /><div className="hub-body"><i /><b /></div><small>APEX RACING<br />AR-26</small></div>
+      <div className="hub-car" aria-label="Apex Racing Formula One car"><img src="/images/apex-f1-car.png" alt="Red Formula One race car" /><small>APEX RACING<br />AR-26</small></div>
       <aside className="hub-weekend"><header><span><i /> NEXT EVENT</span><b>01 / 24</b></header><div className="hub-flag">🇦🇺</div><p>AUSTRALIAN GRAND PRIX</p><strong>MELBOURNE</strong><small>06—08 MAR · ALBERT PARK</small><footer><span>RACE WEEKEND</span><b>START →</b></footer></aside>
     </section>
     <footer className="hub-footer"><span>11 TEAMS</span><i /><span>22 DRIVERS</span><i /><span>24 GRAND PRIX</span><b>MAKE THE CALL.</b></footer>

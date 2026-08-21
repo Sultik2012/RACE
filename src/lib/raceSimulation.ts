@@ -10,6 +10,7 @@ export type RaceDriver = {
 type SimulationInput = {
   carPace: number;
   driverRating: number;
+  opponentChallenge: number;
   player: string;
   mode: RaceMode;
   playerWear: number;
@@ -40,7 +41,7 @@ export function advanceRace(drivers: RaceDriver[], input: SimulationInput): Simu
   const next = drivers.map((driver, index) => {
     const isPlayer = driver.name === input.player;
     const modeBoost = input.mode === 'ATTACK' ? 0.022 : input.mode === 'SAVE' ? -0.014 : 0;
-    const skill = isPlayer ? (input.carPace + input.driverRating) / 700 : 0.22 + ((index * 13) % 17) / 1000;
+    const skill = isPlayer ? (input.carPace + input.driverRating) / 700 : 0.22 + input.opponentChallenge / 5000 + ((index * 13) % 17) / 1000;
     const tyrePenalty = (isPlayer ? input.playerWear : driver.tyreWear) / 9000;
     const weatherPenalty = input.weatherIsWet && !isPlayer ? 0.006 : 0;
     const ersBoost = isPlayer && input.useErs ? 0.035 : 0;

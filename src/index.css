@@ -1119,6 +1119,38 @@ em {
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
+.hq-category-bar {
+  padding-bottom: 0;
+}
+.hq-categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #ffffff1b;
+}
+.hq-categories button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 58px;
+  border: 0;
+  border-right: 1px solid #ffffff1b;
+  background: #12151a;
+  color: #a3a7ad;
+  font: 800 13px "Barlow Condensed";
+  letter-spacing: .08em;
+}
+.hq-categories button:last-child { border-right: 0; }
+.hq-categories button small { color: var(--cyan); font: 800 10px Inter; }
+.hq-categories button.active { background: var(--red); color: #fff; }
+.hq-categories button.active small { color: #fff; }
+.category-content { display: grid; gap: 16px; }
+.tutorial-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: #050609c9; }
+.career-tutorial { width: min(100%, 520px); padding: 32px; border: 1px solid #ffffff2b; background: linear-gradient(145deg, #1a1f29, #0e1015); box-shadow: 14px 14px 0 #00000055; }
+.career-tutorial h2 { margin: 10px 0 16px; font-size: clamp(28px, 7vw, 46px); line-height: .95; }
+.career-tutorial > p:not(.panel-label) { color: #c6cad1; line-height: 1.6; }
+.career-tutorial > div { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
+.tutorial-skip { border: 0; background: transparent; color: #aeb4bc; font: 800 12px "Barlow Condensed"; letter-spacing: .08em; }
 .hq-panel {
   padding: 20px;
   background: #eae7df;
@@ -2359,6 +2391,15 @@ em {
   .hq-grid {
     grid-template-columns: 1fr;
   }
+  .hq-categories {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hq-categories button:nth-child(2) {
+    border-right: 0;
+  }
+  .hq-categories button:nth-child(-n + 2) {
+    border-bottom: 1px solid #ffffff1b;
+  }
   .stat-row {
     gap: 8px;
     font-size: 9px;
@@ -3169,6 +3210,25 @@ em {
   color: #fff;
   font: 800 12px "Barlow Condensed";
 }
+.theme-buttons, .pit-crew-actions { display: flex; gap: 7px; }
+.theme-buttons button, .refund-button { border: 1px solid #ffffff36; padding: 7px 9px; background: transparent; color: inherit; font: 800 11px "Barlow Condensed"; letter-spacing: .06em; }
+.theme-buttons button.active { border-color: var(--cyan); background: #51e4d022; color: var(--cyan); }
+.refund-button { border-color: #f5bd4f; color: #f5bd4f; }
+.refund-button:disabled { opacity: .45; cursor: not-allowed; }
+.garage-modal > .refund-button { margin: -2px 0 14px; }
+
+html[data-theme="light"] { --bg: #f3f5f8; --surface: #ffffff; --surface-2: #e9edf3; --line: #c8d0da; --muted: #5f6976; --ink: #17202c; --red: #df352b; --cyan: #087d72; color: var(--ink); background: var(--bg); }
+html[data-theme="light"] body { background: var(--bg); color: var(--ink); }
+html[data-theme="light"] body::before { background: radial-gradient(circle at 82% -10%, #f1c9c5 0, transparent 34%), radial-gradient(circle at 0 42%, #cce8ee 0, transparent 36%); }
+html[data-theme="light"] .topbar { background: #ffffffdf; border-color: var(--line); color: var(--muted); }
+html[data-theme="light"] .brand, html[data-theme="light"] .hq-panel h2, html[data-theme="light"] .stat-row b { color: var(--ink); }
+html[data-theme="light"] .hq-panel, html[data-theme="light"] .driver-growth, html[data-theme="light"] .pit-crew, html[data-theme="light"] .driver-select, html[data-theme="light"] .next-race, html[data-theme="light"] .season-summary, html[data-theme="light"] .career-extras > *, html[data-theme="light"] .ai-assistant, html[data-theme="light"] .settings-panel { background: var(--surface); color: var(--ink); box-shadow: 8px 8px 0 #17202c12; }
+html[data-theme="light"] .hq-categories button, html[data-theme="light"] .stat-row span { background: var(--surface); color: var(--muted); }
+html[data-theme="light"] .hq-categories button.active { background: var(--red); color: #fff; }
+html[data-theme="light"] .shop-row button, html[data-theme="light"] .pit-crew button:not(.refund-button), html[data-theme="light"] .championship-button { background: #e6eaf0; color: var(--ink); }
+html[data-theme="light"] .garage-modal, html[data-theme="light"] .career-tutorial { background: #fff; color: var(--ink); }
+html[data-theme="light"] .garage-upgrades button { background: #1e2937; }
+html[data-theme="light"] .settings-toggle, html[data-theme="light"] .settings-panel label, html[data-theme="light"] .settings-panel .change-device { color: var(--ink); }
 
 @media (max-width: 700px) {
   .weekend {

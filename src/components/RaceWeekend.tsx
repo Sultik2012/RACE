@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Session } from "../lib/racingData";
+import { opponentChallenge, type Difficulty } from "../lib/raceDifficulty";
 import { trackLayoutUrl } from "../lib/trackLayouts";
 import {
   advanceRace,
@@ -33,7 +34,7 @@ const labels: Record<Session, string> = {
   Race: "RACE",
 };
 const tyres: Tyre[] = ["SOFT", "MEDIUM", "HARD", "INTERMEDIATE", "WET"];
-const prizes = [22, 16, 12, 9, 7, 5, 4, 3, 2, 1];
+const prizes = Array.from({ length: 22 }, (_value, index) => 22 - index);
 const weatherList = ["Sunny", "Light rain", "Cloudy", "Heavy rain"];
 const tyreData: Record<Tyre, { pace: number; life: number }> = {
   SOFT: { pace: 5, life: 14 },
@@ -42,6 +43,11 @@ const tyreData: Record<Tyre, { pace: number; life: number }> = {
   INTERMEDIATE: { pace: 0, life: 26 },
   WET: { pace: -1, life: 30 },
 };
+function createStartingGrid(driver: string, teammate: string, gridDrivers: string[], startingPosition: number) {
+  const rivals = Array.from(new Set([teammate, ...gridDrivers])).filter((name) => name !== driver).slice(0, 21);
+  rivals.splice(startingPosition - 1, 0, driver);
+  return createRaceDrivers(rivals);
+}
 export function RaceWeekend({
   pace,
   driverRating,
@@ -57,6 +63,11 @@ export function RaceWeekend({
 }: Props) {
   // Race mode is already factored into the simulation; controls are added with the race strategy panel.
   const [session, setSession] = useState<Session>("Practice 1");
+  const [difficulty] = useState<Difficulty>(() => (localStorage.getItem('apex-difficulty') as Difficulty | null) ?? 'PRO');
+  const [upgradeCount] = useState(() => Number(localStorage.getItem('apex-active-upgrade-count') ?? 0));
+  const botChallenge = opponentChallenge(difficulty, round);
+  const developmentPositionBonus = Math.floor(upgradeCount / 2);
+  const startingPosition = Math.max(1, Math.min(22, 24 - Math.round((pace + driverRating - botChallenge) / 9) - developmentPositionBonus + ((round * 3) % 5 - 2)));
   const [done, setDone] = useState<Session[]>([]);
   const [setup, setSetup] = useState(0);
   const [grid, setGrid] = useState<number | null>(null);
@@ -78,11 +89,7 @@ export function RaceWeekend({
   const [radioMessage, setRadioMessage] = useState(
     "Engineer: Build tyre temperature and keep the car clean.",
   );
-  const [raceDrivers, setRaceDrivers] = useState<RaceDriver[]>(() =>
-    createRaceDrivers(
-      Array.from(new Set([driver, teammate, ...gridDrivers])).slice(0, 22),
-    ),
-  );
+  const [raceDrivers, setRaceDrivers] = useState<RaceDriver[]>(() => createStartingGrid(driver, teammate, gridDrivers, startingPosition));
   const [retired, setRetired] = useState(false);
   const [flag, setFlag] = useState<"YELLOW" | "RED" | null>(null);
   const [startLights, setStartLights] = useState(false);
@@ -103,8 +110,9 @@ export function RaceWeekend({
     driverRating +
     tyreData[tyre].pace +
     modePace +
-    (wet && (tyre === "INTERMEDIATE" || tyre === "WET") ? 8 : wet ? -8 : 0);
-  const base = Math.max(1, Math.min(22, 25 - Math.floor(strength / 8)));
+    (wet && (tyre === "INTERMEDIATE" || tyre === "WET") ? 8 : wet ? -8 : 0) -
+    botChallenge;
+  const base = Math.max(1, Math.min(22, startingPosition - Math.round((strength - (pace + driverRating - botChallenge)) / 5)));
   const simulatedPosition =
     raceDrivers.findIndex((entry) => entry.name === driver) + 1;
   const simulatedTeammatePosition =
@@ -158,6 +166,7 @@ export function RaceWeekend({
         const result = advanceRace(current, {
           carPace: pace,
           driverRating,
+          opponentChallenge: botChallenge,
           player: driver,
           mode: safetyCar ? "SAVE" : raceMode,
           playerWear: wear,
@@ -173,7 +182,7 @@ export function RaceWeekend({
       });
     }, 250);
     return () => window.clearInterval(timer);
-  }, [race, finished, retired, pitTime, pace, driverRating, driver, raceMode, wear, ersActive, drsAvailable, wet, speed, startLights, safetyCar]);
+  }, [race, finished, retired, pitTime, pace, driverRating, driver, raceMode, wear, ersActive, drsAvailable, wet, speed, startLights, safetyCar, botChallenge]);
   useEffect(() => {
     if (pitTime <= 0) return;
     const timer = window.setInterval(
@@ -472,7 +481,7 @@ export function RaceWeekend({
     setPaid(false);
     setRetired(false);
     if (next === "Race") {
-      setRaceDrivers(createRaceDrivers(Array.from(new Set([driver, teammate, ...gridDrivers])).slice(0, 22)));
+      setRaceDrivers(createStartingGrid(driver, teammate, gridDrivers, grid ?? base));
       setErs(100);
       setDrsAvailable(false);
       setPenalty(null);
@@ -676,6 +685,9 @@ export function RaceWeekend({
           </span>
           <span>
             GRID<b>{grid ? `P${grid}` : "—"}</b>
+          </span>
+          <span>
+            UPGRADES<b>+{developmentPositionBonus} POS</b>
           </span>
         </div>
       </div>
